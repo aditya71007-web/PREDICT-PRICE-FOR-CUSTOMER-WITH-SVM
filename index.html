@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Churn Prediction</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Customer Churn Prediction</h2>
+
+    <input type="number" id="age" placeholder="Enter Age">
+
+    <input type="number"
+           id="charge"
+           placeholder="Monthly Charge">
+
+    <button onclick="predict()">
+        Predict
+    </button>
+
+    <h3 id="result"></h3>
+</div>
+
+<script>
+async function predict() {
+
+    const age = document.getElementById("age").value;
+    const charge = document.getElementById("charge").value;
+
+    const response = await fetch(
+        "http://127.0.0.1:8000/predict",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                age: parseInt(age),
+                monthly_charge: parseFloat(charge)
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    document.getElementById("result").innerHTML =
+        data.message;
+}
+</script>
+
+</body>
+</html>
